@@ -1,1 +1,1 @@
-# react-dev
+# MERN stack chat application
