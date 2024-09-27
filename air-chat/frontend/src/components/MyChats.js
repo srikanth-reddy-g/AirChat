@@ -85,29 +85,34 @@ const MyChats = ({ fetchAgain }) => {
         overflowY={"hidden"}
       >
         {chats ? (
-          <Stack overflowY="scroll">
-            {chats.map((chat) => (
-              <Box
-                onClick={() => setSelectedChat(chat)}
-                cursor="pointer"
-                bg={selectedChat === chat ? "#38B2AC" : "#E8E8E8"}
-                color={selectedChat === chat ? "white" : "black"}
-                px={3}
-                py={2}
-                borderRadius="lg"
-                key={chat._id}
-              >
-                <Text>
-                  {!chat.isGroupChat
-                    ? getSender(loggedUser, chat.users)
-                    : chat.chatName}
-                </Text>
-              </Box>
-            ))}
-          </Stack>
-        ) : (
-          <ChatLoading />
-        )}
+  <Stack overflowY="scroll">
+    {chats.map((chat) => {
+      const senderName = !chat.isGroupChat ? getSender(loggedUser, chat.users) : chat.chatName;
+
+      // Skip rendering if senderName is null (indicating a deleted or missing user)
+      if (!chat.isGroupChat && !senderName) {
+        return null;  // Return null to skip rendering this chat
+      }
+
+      return (
+        <Box
+          onClick={() => setSelectedChat(chat)}
+          cursor="pointer"
+          bg={selectedChat === chat ? "#38B2AC" : "#E8E8E8"}
+          color={selectedChat === chat ? "white" : "black"}
+          px={3}
+          py={2}
+          borderRadius="lg"
+          key={chat._id}
+        >
+          <Text>{senderName}</Text>
+        </Box>
+      );
+    })}
+  </Stack>
+) : (
+  <ChatLoading />
+)}
       </Box>
     </Box>
   );
