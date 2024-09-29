@@ -3,7 +3,6 @@ export const getSender = (loggedUser, users) => {
     return null;
   }
   const otherUser = users[0]._id === loggedUser._id ? users[1] : users[0];
-
   return otherUser?.name || null;
 };
 
